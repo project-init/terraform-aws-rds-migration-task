@@ -67,6 +67,11 @@ resource "aws_ecs_task_definition" "migration" {
   execution_role_arn       = aws_iam_role.migrator.arn
   task_role_arn            = aws_iam_role.migrator.arn
 
+  runtime_platform {
+    operating_system_family = "LINUX"
+    cpu_architecture        = "ARM64"
+  }
+
   container_definitions = jsonencode([
     {
       name      = "migrator"
@@ -108,6 +113,9 @@ resource "aws_ecs_task_definition" "migration" {
           value = "require"
         }
       ]
+
+      cpu    = 256
+      memory = 512
 
       command     = ["up"]
       stopTimeout = 30
