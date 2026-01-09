@@ -62,8 +62,8 @@ resource "aws_ecs_task_definition" "migration" {
   family                   = "${var.service_name}-migration"
   network_mode             = "awsvpc"
   requires_compatibilities = [var.use_ec2 ? "EC2" : "FARGATE"]
-  cpu                      = "128"
-  memory                   = "128"
+  cpu                      = var.use_ec2 ? "128" : "256"
+  memory                   = var.use_ec2 ? "128" : "512"
   execution_role_arn       = aws_iam_role.migrator.arn
   task_role_arn            = aws_iam_role.migrator.arn
 
