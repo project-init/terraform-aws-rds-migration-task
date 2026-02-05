@@ -1,3 +1,8 @@
+locals {
+  cpu    = var.use_ec2 ? 128 : 256
+  memory = var.use_ec2 ? 128 : 512
+}
+
 resource "aws_iam_role" "migrator" {
   name               = "${var.service_name}-migrator-execution-task-role"
   assume_role_policy = data.aws_iam_policy_document.migrator_assume_role_policy.json
@@ -62,8 +67,8 @@ resource "aws_ecs_task_definition" "migration" {
   family                   = "${var.service_name}-migration"
   network_mode             = "awsvpc"
   requires_compatibilities = [var.use_ec2 ? "EC2" : "FARGATE"]
-  cpu                      = var.use_ec2 ? "128" : "256"
-  memory                   = var.use_ec2 ? "128" : "512"
+  cpu                      = local.cpu
+  memory                   = local.memory
   execution_role_arn       = aws_iam_role.migrator.arn
   task_role_arn            = aws_iam_role.migrator.arn
 
@@ -114,8 +119,8 @@ resource "aws_ecs_task_definition" "migration" {
         }
       ]
 
-      cpu    = 256
-      memory = 512
+      cpu    = local.cpu
+      memory = local.memory
 
       command     = ["up"]
       stopTimeout = 30
