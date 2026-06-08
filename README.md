@@ -20,15 +20,15 @@ Check our [Examples](examples) for full usage information.
 ## Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.25.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.81.0 |
 
 ## Providers
 
 | Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 6.25.0 |
+| ---- | ------- |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 5.81.0 |
 
 ## Modules
 
@@ -37,7 +37,7 @@ No modules.
 ## Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [aws_cloudwatch_log_group.migration_logs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_ecs_task_definition.migration](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecs_task_definition) | resource |
 | [aws_iam_policy.migrator_exec_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy) | resource |
@@ -53,7 +53,7 @@ No modules.
 ## Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_environment"></a> [environment](#input\_environment) | The name of the environment the migration is happening. | `string` | n/a | yes |
 | <a name="input_image"></a> [image](#input\_image) | The docker image to use for the container. | `string` | n/a | yes |
 | <a name="input_rds"></a> [rds](#input\_rds) | n/a | <pre>object({<br/>    endpoint = string<br/>    database = string<br/>    username = string<br/>  })</pre> | n/a | yes |
