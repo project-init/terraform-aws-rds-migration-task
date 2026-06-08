@@ -58,3 +58,9 @@ variable "security_group_id" {
   nullable    = false
   description = "The id of the security group to use for the task."
 }
+
+variable "repository_credentials_arn" {
+  type        = string
+  default     = null
+  description = "ARN of Secrets Manager secret containing private registry credentials."
+}
