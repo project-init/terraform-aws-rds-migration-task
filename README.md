@@ -57,6 +57,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 | ---- | ----------- | ---- | ------- | :------: |
+| <a name="input_enable_repository_credentials"></a> [enable\_repository\_credentials](#input\_enable\_repository\_credentials) | Whether or not to create IAM permissions for private registry image pull. | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | The name of the environment the migration is happening. | `string` | n/a | yes |
 | <a name="input_image"></a> [image](#input\_image) | The docker image to use for the container. | `string` | n/a | yes |
 | <a name="input_rds"></a> [rds](#input\_rds) | n/a | <pre>object({<br/>    endpoint = string<br/>    database = string<br/>    username = string<br/>  })</pre> | n/a | yes |

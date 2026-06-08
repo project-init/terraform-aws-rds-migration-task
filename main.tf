@@ -64,7 +64,7 @@ resource "aws_iam_role_policy_attachment" "migrator_rds_auth_policy" {
 }
 
 data "aws_iam_policy_document" "migrator_secrets_policy" {
-  count   = var.repository_credentials_arn != null ? 1 : 0
+  count   = var.enable_repository_credentials ? 1 : 0
   version = "2012-10-17"
 
   statement {
@@ -75,13 +75,13 @@ data "aws_iam_policy_document" "migrator_secrets_policy" {
 }
 
 resource "aws_iam_policy" "migrator_secrets_policy" {
-  count  = var.repository_credentials_arn != null ? 1 : 0
+  count  = var.enable_repository_credentials ? 1 : 0
   name   = "${var.service_name}-migrator-registry-secrets"
   policy = data.aws_iam_policy_document.migrator_secrets_policy[0].json
 }
 
 resource "aws_iam_role_policy_attachment" "migrator_secrets_policy" {
-  count      = var.repository_credentials_arn != null ? 1 : 0
+  count      = var.enable_repository_credentials ? 1 : 0
   role       = aws_iam_role.migrator.name
   policy_arn = aws_iam_policy.migrator_secrets_policy[0].arn
 }
@@ -159,7 +159,7 @@ resource "aws_ecs_task_definition" "migration" {
         startPeriod = 10
       }
     },
-    var.repository_credentials_arn != null ? {
+    var.enable_repository_credentials ? {
       repositoryCredentials = {
         credentialsParameter = var.repository_credentials_arn
       }
