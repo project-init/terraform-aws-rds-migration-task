@@ -64,3 +64,9 @@ variable "repository_credentials_arn" {
   default     = null
   description = "ARN of Secrets Manager secret containing private registry credentials."
 }
+
+variable "enable_repository_credentials" {
+  type        = bool
+  default     = false
+  description = "Whether or not to create IAM permissions for private registry image pull."
+}
