@@ -4,8 +4,9 @@ locals {
 }
 
 resource "aws_iam_role" "migrator" {
-  name               = "${var.service_name}-migrator-execution-task-role"
-  assume_role_policy = data.aws_iam_policy_document.migrator_assume_role_policy.json
+  name                 = "${var.service_name}-migrator-execution-task-role"
+  assume_role_policy   = data.aws_iam_policy_document.migrator_assume_role_policy.json
+  permissions_boundary = var.permissions_boundary_arn
   tags = {
     Name        = "migrator-iam-role"
     Environment = var.environment
