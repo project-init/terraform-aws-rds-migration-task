@@ -59,6 +59,12 @@ variable "security_group_id" {
   description = "The id of the security group to use for the task."
 }
 
+variable "permissions_boundary_arn" {
+  type        = string
+  default     = null
+  description = "ARN for the IAM permissions boundary to attach to the task execution role"
+}
+
 variable "repository_credentials_arn" {
   type        = string
   default     = null
