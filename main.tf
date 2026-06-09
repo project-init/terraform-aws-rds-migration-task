@@ -102,69 +102,71 @@ resource "aws_ecs_task_definition" "migration" {
   }
 
   container_definitions = jsonencode([
-    {
-      name      = "migrator"
-      image     = var.image
-      essential = true
+    merge(
+      {
+        name      = "migrator"
+        image     = var.image
+        essential = true
 
-      logConfiguration = {
-        logDriver = "awslogs"
-        options = {
-          "awslogs-group"         = aws_cloudwatch_log_group.migration_logs.name
-          "awslogs-region"        = "us-east-1"
-          "awslogs-stream-prefix" = "ecs"
+        logConfiguration = {
+          logDriver = "awslogs"
+          options = {
+            "awslogs-group"         = aws_cloudwatch_log_group.migration_logs.name
+            "awslogs-region"        = "us-east-1"
+            "awslogs-stream-prefix" = "ecs"
+          }
         }
-      }
 
-      environment = [
-        {
-          name  = "HOST"
-          value = var.rds.endpoint
-        },
-        {
-          name  = "PORT"
-          value = "5432"
-        },
-        {
-          name  = "DATABASE"
-          value = var.rds.database
-        },
-        {
-          name  = "USER"
-          value = var.rds.username
-        },
-        {
-          name  = "GENERATE_RDS_TOKEN"
-          value = "1"
-        },
-        {
-          name  = "SSL_MODE"
-          value = "require"
-        }
-      ]
-
-      cpu    = local.cpu
-      memory = local.memory
-
-      command     = ["up"]
-      stopTimeout = 30
-
-      healthCheck = {
-        command = [
-          "CMD-SHELL",
-          "echo 'Migration container is running'"
+        environment = [
+          {
+            name  = "HOST"
+            value = var.rds.endpoint
+          },
+          {
+            name  = "PORT"
+            value = "5432"
+          },
+          {
+            name  = "DATABASE"
+            value = var.rds.database
+          },
+          {
+            name  = "USER"
+            value = var.rds.username
+          },
+          {
+            name  = "GENERATE_RDS_TOKEN"
+            value = "1"
+          },
+          {
+            name  = "SSL_MODE"
+            value = "require"
+          }
         ]
-        interval    = 10
-        timeout     = 5
-        retries     = 3
-        startPeriod = 10
-      }
-    },
-    var.enable_repository_credentials ? {
-      repositoryCredentials = {
-        credentialsParameter = var.repository_credentials_arn
-      }
-    } : {}
+
+        cpu    = local.cpu
+        memory = local.memory
+
+        command     = ["up"]
+        stopTimeout = 30
+
+        healthCheck = {
+          command = [
+            "CMD-SHELL",
+            "echo 'Migration container is running'"
+          ]
+          interval    = 10
+          timeout     = 5
+          retries     = 3
+          startPeriod = 10
+        }
+      },
+      var.enable_repository_credentials ? {
+        repositoryCredentials = {
+          credentialsParameter = var.repository_credentials_arn
+        }
+      } : {}
+    )
   ])
 }
 
